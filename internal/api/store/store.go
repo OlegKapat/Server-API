@@ -3,12 +3,13 @@ package store
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/lib/pq"
+	_"github.com/lib/pq"
 )
 
 type Store struct {
 	config *Config
 	db     *sql.DB
+	userRepository *UserRepository
 }
 
 func New(config *Config) *Store {
@@ -18,7 +19,7 @@ func New(config *Config) *Store {
 }
 func (s *Store) Open() error {
 	db, err := sql.Open("postgres", s.config.DatabaseURL)
-	fmt.Sprintf("Data %v", db)
+	fmt.Println(db)
 	if err != nil {
 		return err
 	}
@@ -31,4 +32,13 @@ func (s *Store) Open() error {
 
 func (s *Store) Close() {
 	s.db.Close()
+}
+func (s *Store) User() *UserRepository{
+   if s.userRepository != nil {
+	return s.userRepository
+   }
+   s.userRepository=&UserRepository{
+	store:s,
+   }
+   return s.userRepository
 }

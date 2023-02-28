@@ -2,10 +2,10 @@ package apiserver
 
 import (
 	"Go-http-rest-api/internal/api/store"
-	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 	"io"
 	"net/http"
+	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 type APIServer struct {
@@ -47,6 +47,7 @@ func (s *APIServer) configureLogger() error {
 func (s *APIServer) configureRouter() {
 	s.router.HandleFunc("/hello", s.handleHello())
 }
+
 func (s *APIServer) configureStore() error {
 	st := store.New(s.config.Store)
 	if err := st.Open(); err != nil {
